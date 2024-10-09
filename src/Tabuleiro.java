@@ -87,21 +87,23 @@ class Tabuleiro {
         }
     }
 
-    public boolean verificarJogada(int lin, int col) {
+    public boolean verificarJogada(int lin, int col, JLabel Status) {
         if (jogoFinalizado) {
             System.out.println("O jogo já acabou! Reinicie para jogar novamente.");
+            Status.setText("Status: O jogo já acabou! Reinicie para jogar novamente.");
             return false;
         }
         if (tabuleiro[lin][col].equals(" ")) {
             return true;
         } else {
             System.out.println("Posição já ocupada. Faça outra jogada.");
+            Status.setText("Status: Posição já ocupada. Faça outra jogada.");
             return false;
         }
     }
 
-    public boolean fazerJogada(int lin, int col, String jogador) {
-        if (verificarJogada(lin, col)) {
+    public boolean fazerJogada(int lin, int col, String jogador, JLabel Status ) {
+        if (verificarJogada(lin, col, Status)) {
             tabuleiro[lin][col] = jogador;
             return true;
         }

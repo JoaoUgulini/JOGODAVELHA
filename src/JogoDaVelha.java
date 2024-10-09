@@ -58,7 +58,7 @@ public class JogoDaVelha extends JFrame {
             System.out.print("Jogador " + jogador.getSimboloAtual() + " - Coluna (1-3): ");
             int col = entrada.nextInt() - 1;
 
-            if (tabuleiro.fazerJogada(lin, col, jogador.getSimboloAtual())) {
+            if (tabuleiro.fazerJogada(lin, col, jogador.getSimboloAtual(), Status)) {
                 if (tabuleiro.verificarVitoria(jogador.getSimboloAtual(),Status)) {
                     continuar = false;
                     tabuleiro.exibirTabuleiro();
@@ -73,7 +73,7 @@ public class JogoDaVelha extends JFrame {
                     lin = jogada[0];
                     col = jogada[1];
 
-                    if (tabuleiro.fazerJogada(lin, col, jogador.getSimboloAtual())) {
+                    if (tabuleiro.fazerJogada(lin, col, jogador.getSimboloAtual(), Status)) {
                         break;
                     }
                 }
@@ -111,10 +111,12 @@ public class JogoDaVelha extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	
 	public JogoDaVelha() {
-		 tabuleiro = new Tabuleiro();
+		 	tabuleiro = new Tabuleiro();
 	        jogador = new Jogador();
 	        jogadasPossiveis = new Stack<>();
+	        
 	        inicializarJogadasPossiveis();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 758, 525);
@@ -123,6 +125,7 @@ public class JogoDaVelha extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(new MigLayout("", "[60.00,grow][140.00][140.00][140.00][78.00,grow]", "[grow][60.00][60.00][60.00][grow][]"));
 		
+		
 		txt1_1 = new JTextField();
 		txt1_1.setEditable(false);
 		txt1_1.setToolTipText("");
@@ -130,7 +133,7 @@ public class JogoDaVelha extends JFrame {
 		txt1_1.addMouseListener(new MouseAdapter() {
 		    @Override
 		    public void mouseClicked(MouseEvent e) {
-		        if (tabuleiro.fazerJogada(0, 0, jogador.getSimboloAtual())) {
+		        if (tabuleiro.fazerJogada(0, 0, jogador.getSimboloAtual(), Status)) {
 		            txt1_1.setText(jogador.getSimboloAtual());  
 
 		            if (tabuleiro.verificarVitoria(jogador.getSimboloAtual(), Status)) {
@@ -156,7 +159,7 @@ public class JogoDaVelha extends JFrame {
 		txt1_2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (tabuleiro.fazerJogada(0, 1, jogador.getSimboloAtual())) {
+				if (tabuleiro.fazerJogada(0, 1, jogador.getSimboloAtual(), Status)) {
 		            txt1_2.setText(jogador.getSimboloAtual());  
 
 		            if (tabuleiro.verificarVitoria(jogador.getSimboloAtual(), Status)) {
@@ -180,7 +183,7 @@ public class JogoDaVelha extends JFrame {
 		txt1_3.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (tabuleiro.fazerJogada(0, 2, jogador.getSimboloAtual())) {
+				if (tabuleiro.fazerJogada(0, 2, jogador.getSimboloAtual(), Status)) {
 		            txt1_3.setText(jogador.getSimboloAtual());  
 
 		            if (tabuleiro.verificarVitoria(jogador.getSimboloAtual(), Status)) {
@@ -204,7 +207,7 @@ public class JogoDaVelha extends JFrame {
 		txt2_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (tabuleiro.fazerJogada(1, 0, jogador.getSimboloAtual())) {
+				if (tabuleiro.fazerJogada(1, 0, jogador.getSimboloAtual(), Status)) {
 		            txt2_1.setText(jogador.getSimboloAtual());  
 
 		            if (tabuleiro.verificarVitoria(jogador.getSimboloAtual(), Status)) {
@@ -228,7 +231,7 @@ public class JogoDaVelha extends JFrame {
 		txt2_2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (tabuleiro.fazerJogada(1, 1, jogador.getSimboloAtual())) {
+				if (tabuleiro.fazerJogada(1, 1, jogador.getSimboloAtual(), Status)) {
 		            txt2_2.setText(jogador.getSimboloAtual());  
 
 		            if (tabuleiro.verificarVitoria(jogador.getSimboloAtual(), Status)) {
@@ -252,7 +255,7 @@ public class JogoDaVelha extends JFrame {
 		txt2_3.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (tabuleiro.fazerJogada(1, 2, jogador.getSimboloAtual())) {
+				if (tabuleiro.fazerJogada(1, 2, jogador.getSimboloAtual(), Status)) {
 		            txt2_3.setText(jogador.getSimboloAtual());  
 
 		            if (tabuleiro.verificarVitoria(jogador.getSimboloAtual(), Status)) {
@@ -276,7 +279,7 @@ public class JogoDaVelha extends JFrame {
 		txt3_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (tabuleiro.fazerJogada(2, 0, jogador.getSimboloAtual())) {
+				if (tabuleiro.fazerJogada(2, 0, jogador.getSimboloAtual(), Status)) {
 		            txt3_1.setText(jogador.getSimboloAtual());  
 
 		            if (tabuleiro.verificarVitoria(jogador.getSimboloAtual(), Status)) {
@@ -300,7 +303,7 @@ public class JogoDaVelha extends JFrame {
 		txt3_2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (tabuleiro.fazerJogada(2, 1, jogador.getSimboloAtual())) {
+				if (tabuleiro.fazerJogada(2, 1, jogador.getSimboloAtual(), Status)) {
 		            txt3_2.setText(jogador.getSimboloAtual());  
 
 		            if (tabuleiro.verificarVitoria(jogador.getSimboloAtual(), Status)) {
@@ -324,7 +327,7 @@ public class JogoDaVelha extends JFrame {
 		txt3_3.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (tabuleiro.fazerJogada(2, 2, jogador.getSimboloAtual())) {
+				if (tabuleiro.fazerJogada(2, 2, jogador.getSimboloAtual(), Status)) {
 		            txt3_3.setText(jogador.getSimboloAtual());  
 
 		            if (tabuleiro.verificarVitoria(jogador.getSimboloAtual(), Status)) {
