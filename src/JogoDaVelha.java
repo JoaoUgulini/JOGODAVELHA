@@ -10,6 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import net.miginfocom.swing.MigLayout;
 
 public class JogoDaVelha extends JFrame {
 
@@ -46,76 +47,104 @@ public class JogoDaVelha extends JFrame {
      * Create the frame.
      */
     public JogoDaVelha() {
+    	setResizable(false);
+    	setTitle("Jogo da Velha");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 450, 300);
-        getContentPane().setLayout(null);
+        setBounds(100, 100, 587, 405);
+        getContentPane().setLayout(new MigLayout("", "[grow][86px][10px][86px][10px][86px][12px][124px][grow]", "[grow][50px][50px][50px][14px][grow]"));
+        
+                JButton btReneciar = new JButton("Reiniciar Jogo");
+                btReneciar.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        tabuleiro.reiniciarJogo(Status);
+                        txt1_1.setText(" ");
+                        txt1_2.setText(" ");
+                        txt1_3.setText(" ");
+                        txt2_1.setText(" ");
+                        txt2_2.setText(" ");
+                        txt2_3.setText(" ");
+                        txt3_1.setText(" ");
+                        txt3_2.setText(" ");
+                        txt3_3.setText(" ");
+                    }
+                });
+                getContentPane().add(btReneciar, "cell 7 3,grow");
 
         Status = new JLabel("Status: Jogo em andamento");
-        Status.setBounds(10, 240, 414, 14);
-        getContentPane().add(Status);
+        getContentPane().add(Status, "cell 1 4 7 1,growx,aligny top");
 
         txt1_1 = new JTextField();
-        txt1_1.setBounds(10, 11, 86, 50);
-        getContentPane().add(txt1_1);
+        txt1_1.setBackground(SystemColor.text);
+        txt1_1.setEditable(false);
+        getContentPane().add(txt1_1, "cell 1 1,grow");
         txt1_1.setColumns(10);
         txt1_1.setHorizontalAlignment(SwingConstants.CENTER);
-        txt1_1.setFont(new Font("OCR A Extended", Font.BOLD, 35));
+        txt1_1.setFont(new Font("Modern No. 20", Font.BOLD, 40));
 
         txt1_2 = new JTextField();
-        txt1_2.setBounds(106, 11, 86, 50);
-        getContentPane().add(txt1_2);
+        txt1_2.setBackground(SystemColor.text);
+        txt1_2.setEditable(false);
+        getContentPane().add(txt1_2, "cell 3 1,grow");
         txt1_2.setColumns(10);
         txt1_2.setHorizontalAlignment(SwingConstants.CENTER);
-        txt1_2.setFont(new Font("OCR A Extended", Font.BOLD, 35));
+        txt1_2.setFont(new Font("Modern No. 20", Font.BOLD, 40));
 
         txt1_3 = new JTextField();
-        txt1_3.setBounds(202, 11, 86, 50);
-        getContentPane().add(txt1_3);
+        txt1_3.setBackground(SystemColor.text);
+        txt1_3.setEditable(false);
+        getContentPane().add(txt1_3, "cell 5 1,grow");
         txt1_3.setColumns(10);
         txt1_3.setHorizontalAlignment(SwingConstants.CENTER);
-        txt1_3.setFont(new Font("OCR A Extended", Font.BOLD, 35));
+        txt1_3.setFont(new Font("Modern No. 20", Font.BOLD, 40));
 
         txt2_1 = new JTextField();
-        txt2_1.setBounds(10, 72, 86, 50);
-        getContentPane().add(txt2_1);
+        txt2_1.setBackground(SystemColor.text);
+        txt2_1.setEditable(false);
+        getContentPane().add(txt2_1, "cell 1 2,grow");
         txt2_1.setColumns(10);
         txt2_1.setHorizontalAlignment(SwingConstants.CENTER);
-        txt2_1.setFont(new Font("OCR A Extended", Font.BOLD, 35));
+        txt2_1.setFont(new Font("Modern No. 20", Font.BOLD, 40));
 
         txt2_2 = new JTextField();
-        txt2_2.setBounds(106, 72, 86, 50);
-        getContentPane().add(txt2_2);
+        txt2_2.setBackground(SystemColor.text);
+        txt2_2.setEditable(false);
+        getContentPane().add(txt2_2, "cell 3 2,grow");
         txt2_2.setColumns(10);
         txt2_2.setHorizontalAlignment(SwingConstants.CENTER);
-        txt2_2.setFont(new Font("OCR A Extended", Font.BOLD, 35));
+        txt2_2.setFont(new Font("Modern No. 20", Font.BOLD, 40));
 
         txt2_3 = new JTextField();
-        txt2_3.setBounds(202, 72, 86, 50);
-        getContentPane().add(txt2_3);
+        txt2_3.setBackground(SystemColor.text);
+        txt2_3.setEditable(false);
+        getContentPane().add(txt2_3, "cell 5 2,grow");
         txt2_3.setColumns(10);
         txt2_3.setHorizontalAlignment(SwingConstants.CENTER);
-        txt2_3.setFont(new Font("OCR A Extended", Font.BOLD, 35));
+        txt2_3.setFont(new Font("Modern No. 20", Font.BOLD, 40));
 
         txt3_1 = new JTextField();
-        txt3_1.setBounds(10, 133, 86, 50);
-        getContentPane().add(txt3_1);
+        txt3_1.setBackground(SystemColor.text);
+        txt3_1.setEditable(false);
+        getContentPane().add(txt3_1, "cell 1 3,grow");
         txt3_1.setColumns(10);
         txt3_1.setHorizontalAlignment(SwingConstants.CENTER);
-        txt3_1.setFont(new Font("OCR A Extended", Font.BOLD, 35));
+        txt3_1.setFont(new Font("Modern No. 20", Font.BOLD, 40));
 
         txt3_2 = new JTextField();
-        txt3_2.setBounds(106, 133, 86, 50);
-        getContentPane().add(txt3_2);
+        txt3_2.setBackground(SystemColor.text);
+        txt3_2.setEditable(false);
+        getContentPane().add(txt3_2, "cell 3 3,grow");
         txt3_2.setColumns(10);
         txt3_2.setHorizontalAlignment(SwingConstants.CENTER);
-        txt3_2.setFont(new Font("OCR A Extended", Font.BOLD, 35));
+        txt3_2.setFont(new Font("Modern No. 20", Font.BOLD, 40));
 
         txt3_3 = new JTextField();
-        txt3_3.setBounds(202, 133, 86, 50);
-        getContentPane().add(txt3_3);
+        txt3_3.setBackground(SystemColor.text);
+        txt3_3.setEditable(false);
+        getContentPane().add(txt3_3, "cell 5 3,grow");
         txt3_3.setColumns(10);
         txt3_3.setHorizontalAlignment(SwingConstants.CENTER);
-        txt3_3.setFont(new Font("OCR A Extended", Font.BOLD, 35));
+        txt3_3.setFont(new Font("Modern No. 20", Font.BOLD, 40));
 
 
         JTextField[][] camposTexto = {
@@ -254,37 +283,17 @@ public class JogoDaVelha extends JFrame {
         });
 
         JButton btVolta = new JButton("Desfazer Jogada");
-        btVolta.setBounds(300, 11, 124, 50);
         btVolta.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (tabuleiro.desfazerJogada()) {
                     Status.setText("Status: Jogada desfeita.");
-                    jogador.alternarJogador();  // Alterna o jogador após desfazer
+                    jogador.alternarJogador(); 
                     tabuleiro.exibirTabuleiro();
                 } else {
                     Status.setText("Status: Nenhuma jogada para desfazer.");
                 }
             }
         });
-        getContentPane().add(btVolta);
-
-        JButton btReneciar = new JButton("Reiniciar Jogo");
-        btReneciar.setBounds(300, 72, 124, 50);
-        btReneciar.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                tabuleiro.reiniciarJogo(Status);
-                txt1_1.setText(" ");
-                txt1_2.setText(" ");
-                txt1_3.setText(" ");
-                txt2_1.setText(" ");
-                txt2_2.setText(" ");
-                txt2_3.setText(" ");
-                txt3_1.setText(" ");
-                txt3_2.setText(" ");
-                txt3_3.setText(" ");
-            }
-        });
-        getContentPane().add(btReneciar);
+        getContentPane().add(btVolta, "cell 7 1,grow");
     }
 }
