@@ -6,14 +6,14 @@ import javax.swing.JTextField;
 class Tabuleiro {
     private String[][] tabuleiro;
     private boolean jogoFinalizado;
-    private Stack<int[]> historicoJogadas;  // Histórico das jogadas
-    private JTextField[][] camposTexto;     // Mapeamento dos JTextFields
+    private Stack<int[]> historicoJogadas;
+    private JTextField[][] camposTexto;
 
     public Tabuleiro(JTextField[][] camposTexto) {
         tabuleiro = new String[3][3];
         jogoFinalizado = false;
-        historicoJogadas = new Stack<>();    // Inicializa a pilha de jogadas
-        this.camposTexto = camposTexto;      // Recebe os JTextFields
+        historicoJogadas = new Stack<>();
+        this.camposTexto = camposTexto;
         inicializarTabuleiro();
     }
 
@@ -25,47 +25,43 @@ class Tabuleiro {
         }
     }
 
-    // Método para fazer uma jogada
     public boolean fazerJogada(int linha, int coluna, String jogador, JLabel Status) {
         if (tabuleiro[linha][coluna].equals(" ") && !jogoFinalizado) {
             tabuleiro[linha][coluna] = jogador;
-            historicoJogadas.push(new int[]{linha, coluna});  // Salva a jogada no histórico
-            atualizarCamposTexto();  // Atualiza a interface com a jogada
+            historicoJogadas.push(new int[]{linha, coluna});
+            atualizarCamposTexto();
             return true;
         }
         return false;
     }
 
-    // Método para desfazer a última jogada
+
     public boolean desfazerJogada() {
         if (!historicoJogadas.isEmpty()) {
-            int[] ultimaJogada = historicoJogadas.pop();  // Remove a última jogada
+            int[] ultimaJogada = historicoJogadas.pop();
             int linha = ultimaJogada[0];
             int coluna = ultimaJogada[1];
-            tabuleiro[linha][coluna] = " ";              // Limpa a posição no tabuleiro
-            atualizarCamposTexto();                      // Atualiza os JTextFields visualmente
-            jogoFinalizado = false;                      // Reativa o jogo, se necessário
+            tabuleiro[linha][coluna] = " ";
+            atualizarCamposTexto();
+            jogoFinalizado = false;
             return true;
         }
-        return false;  // Se não houver jogadas no histórico
+        return false;
     }
 
-    // Método para atualizar os JTextFields com o conteúdo do tabuleiro
     public void atualizarCamposTexto() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                camposTexto[i][j].setText(tabuleiro[i][j]);  // Atualiza cada JTextField com o valor da matriz
+                camposTexto[i][j].setText(tabuleiro[i][j]);
             }
         }
     }
 
-    // Método de verificação de vitória (sem mudanças)
     public boolean verificarVitoria(String jogador, JLabel Status) {
         if (jogoFinalizado) {
             return false;
         }
 
-        // Verificação de linhas e colunas
         for (int i = 0; i < 3; i++) {
             if (tabuleiro[i][0].equals(jogador) && tabuleiro[i][1].equals(jogador) && tabuleiro[i][2].equals(jogador)) {
                 Status.setText("Status: O Jogador " + jogador + " Ganhou o jogo");
@@ -82,7 +78,6 @@ class Tabuleiro {
             }
         }
 
-        // Verificação de diagonais
         if (tabuleiro[0][0].equals(jogador) && tabuleiro[1][1].equals(jogador) && tabuleiro[2][2].equals(jogador)) {
             Status.setText("Status: O Jogador " + jogador + " Ganhou o jogo");
             jogoFinalizado = true;
@@ -98,7 +93,6 @@ class Tabuleiro {
         return false;
     }
 
-    // Outros métodos...
 
     private boolean verificarEmpate() {
         for (int i = 0; i < 3; i++) {
@@ -125,15 +119,15 @@ class Tabuleiro {
 
     public boolean verificarJogada(int lin, int col, JLabel Status) {
         if (jogoFinalizado) {
-            System.out.println("O jogo já acabou! Reinicie para jogar novamente.");
-            Status.setText("Status: O jogo já acabou! Reinicie para jogar novamente.");
+            System.out.println("O jogo jï¿½ acabou! Reinicie para jogar novamente.");
+            Status.setText("Status: O jogo jï¿½ acabou! Reinicie para jogar novamente.");
             return false;
         }
         if (tabuleiro[lin][col].equals(" ")) {
             return true;
         } else {
-            System.out.println("Posição já ocupada. Faça outra jogada.");
-            Status.setText("Status: Posição já ocupada. Faça outra jogada.");
+            System.out.println("Posiï¿½ï¿½o jï¿½ ocupada. Faï¿½a outra jogada.");
+            Status.setText("Status: Posiï¿½ï¿½o jï¿½ ocupada. Faï¿½a outra jogada.");
             return false;
         }
     }

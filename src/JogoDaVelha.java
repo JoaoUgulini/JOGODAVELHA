@@ -50,7 +50,6 @@ public class JogoDaVelha extends JFrame {
         setBounds(100, 100, 450, 300);
         getContentPane().setLayout(null);
 
-        // Inicializar componentes
         Status = new JLabel("Status: Jogo em andamento");
         Status.setBounds(10, 240, 414, 14);
         getContentPane().add(Status);
@@ -118,18 +117,16 @@ public class JogoDaVelha extends JFrame {
         txt3_3.setHorizontalAlignment(SwingConstants.CENTER);
         txt3_3.setFont(new Font("OCR A Extended", Font.BOLD, 35));
 
-        // Inicializar matriz de JTextFields
+
         JTextField[][] camposTexto = {
             { txt1_1, txt1_2, txt1_3 },
             { txt2_1, txt2_2, txt2_3 },
             { txt3_1, txt3_2, txt3_3 }
         };
 
-        // Inicializar o tabuleiro e o jogador
         tabuleiro = new Tabuleiro(camposTexto);
         jogador = new Jogador();
 
-        // Adicionar ação aos campos para realizar jogadas
         txt1_1.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -256,7 +253,6 @@ public class JogoDaVelha extends JFrame {
             }
         });
 
-        // Botão para desfazer jogada
         JButton btVolta = new JButton("Desfazer Jogada");
         btVolta.setBounds(300, 11, 124, 50);
         btVolta.addActionListener(new ActionListener() {
@@ -272,7 +268,6 @@ public class JogoDaVelha extends JFrame {
         });
         getContentPane().add(btVolta);
 
-        // Botão para reiniciar o jogo
         JButton btReneciar = new JButton("Reiniciar Jogo");
         btReneciar.setBounds(300, 72, 124, 50);
         btReneciar.addMouseListener(new MouseAdapter() {
