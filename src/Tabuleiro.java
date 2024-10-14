@@ -1,7 +1,9 @@
-
 import java.util.Stack;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
 
 class Tabuleiro {
     private String[][] tabuleiro;
@@ -35,14 +37,18 @@ class Tabuleiro {
         return false;
     }
 
-
-    public boolean desfazerJogada() {
+    public boolean desfazerJogada(Jogador jogador) {
         if (!historicoJogadas.isEmpty()) {
             int[] ultimaJogada = historicoJogadas.pop();
             int linha = ultimaJogada[0];
             int coluna = ultimaJogada[1];
             tabuleiro[linha][coluna] = " ";
+            ultimaJogada = historicoJogadas.pop();
+            linha = ultimaJogada[0];
+            coluna = ultimaJogada[1];
+            tabuleiro[linha][coluna] = " ";
             atualizarCamposTexto();
+            jogador.alternarJogador();
             jogoFinalizado = false;
             return true;
         }
@@ -93,7 +99,6 @@ class Tabuleiro {
         return false;
     }
 
-
     private boolean verificarEmpate() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -119,15 +124,15 @@ class Tabuleiro {
 
     public boolean verificarJogada(int lin, int col, JLabel Status) {
         if (jogoFinalizado) {
-            System.out.println("O jogo jï¿½ acabou! Reinicie para jogar novamente.");
-            Status.setText("Status: O jogo jï¿½ acabou! Reinicie para jogar novamente.");
+            System.out.println("O jogo acabou! Reinicie para jogar novamente.");
+            Status.setText("Status: O jogo acabou! Reinicie para jogar novamente.");
             return false;
         }
         if (tabuleiro[lin][col].equals(" ")) {
             return true;
         } else {
-            System.out.println("Posiï¿½ï¿½o jï¿½ ocupada. Faï¿½a outra jogada.");
-            Status.setText("Status: Posiï¿½ï¿½o jï¿½ ocupada. Faï¿½a outra jogada.");
+            System.out.println("Posição ja ocupada. Faça outra jogada.");
+            Status.setText("Status: Posição ja ocupada. Faça outra jogada.");
             return false;
         }
     }
@@ -137,5 +142,41 @@ class Tabuleiro {
         jogoFinalizado = false;
         Status.setText("Status: Jogo reiniciado.");
         System.out.println("O jogo foi reiniciado.");
+    }
+    
+    public boolean jogadaPc(JLabel Status, Jogador jogador) {
+        if (jogoFinalizado) {
+            return false;  
+        }
+
+        List<int[]> posicoesVazias = new ArrayList<>();
+
+        
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (tabuleiro[i][j].equals(" ")) {
+                    posicoesVazias.add(new int[]{i, j});
+                }
+            }
+        }
+
+        if (posicoesVazias.isEmpty()) {
+            return false;  
+        }
+
+        
+        Random random = new Random();
+        int[] jogada = posicoesVazias.get(random.nextInt(posicoesVazias.size()));
+
+  
+        if (fazerJogada(jogada[0], jogada[1], jogador.getSimboloAtual(), Status)) {
+            if (verificarVitoria(jogador.getSimboloAtual(), Status)) {
+                jogoFinalizado = true;  
+                return true;
+            }
+            jogador.alternarJogador();
+        }
+
+        return false;
     }
 }

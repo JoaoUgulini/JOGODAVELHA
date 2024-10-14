@@ -1,28 +1,19 @@
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.SystemColor;
+import java.awt.Color;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import net.miginfocom.swing.MigLayout;
 
 public class JogoDaVelha extends JFrame {
 
-    private JTextField txt1_1;
-    private JTextField txt1_2;
-    private JTextField txt1_3;
-    private JTextField txt2_1;
-    private JTextField txt2_2;
-    private JTextField txt2_3;
-    private JTextField txt3_1;
-    private JTextField txt3_2;
-    private JTextField txt3_3;
+    private JTextField[][] camposTexto;
     private JLabel Status;
     private Tabuleiro tabuleiro;
     private Jogador jogador;
@@ -31,14 +22,12 @@ public class JogoDaVelha extends JFrame {
      * Launch the application.
      */
     public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    JogoDaVelha frame = new JogoDaVelha();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        EventQueue.invokeLater(() -> {
+            try {
+                JogoDaVelha frame = new JogoDaVelha();
+                frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }
@@ -47,253 +36,99 @@ public class JogoDaVelha extends JFrame {
      * Create the frame.
      */
     public JogoDaVelha() {
-    	setResizable(false);
-    	setTitle("Jogo da Velha");
+        setResizable(false);
+        setTitle("Jogo da Velha");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 587, 405);
-        getContentPane().setLayout(new MigLayout("", "[grow][86px][10px][86px][10px][86px][12px][124px][grow]", "[grow][50px][50px][50px][14px][grow]"));
-        
-                JButton btReneciar = new JButton("Reiniciar Jogo");
-                btReneciar.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
-                        tabuleiro.reiniciarJogo(Status);
-                        txt1_1.setText(" ");
-                        txt1_2.setText(" ");
-                        txt1_3.setText(" ");
-                        txt2_1.setText(" ");
-                        txt2_2.setText(" ");
-                        txt2_3.setText(" ");
-                        txt3_1.setText(" ");
-                        txt3_2.setText(" ");
-                        txt3_3.setText(" ");
-                    }
-                });
-                getContentPane().add(btReneciar, "cell 7 3,grow");
+        setBounds(100, 100, 500, 500);
+        getContentPane().setBackground(new Color(245, 245, 245));
+
+        getContentPane().setLayout(new MigLayout("wrap 3", "[grow][grow][grow]", "[]20[grow][grow][grow]20[]20[]"));
+
+
+        JLabel titulo = new JLabel("Jogo da Velha");
+        titulo.setFont(new Font("Dubai", Font.BOLD, 28));
+        titulo.setHorizontalAlignment(SwingConstants.CENTER);
+        getContentPane().add(titulo, "span, align center");
+
+        Font fontCampos = new Font("Modern No. 20", Font.BOLD, 40);
+        Color corFundo = new Color(255, 255, 255);
+
+        camposTexto = new JTextField[3][3];
+
+        for (int linha = 0; linha < 3; linha++) {
+            for (int coluna = 0; coluna < 3; coluna++) {
+                camposTexto[linha][coluna] = criarCampoTexto(fontCampos, corFundo);
+                getContentPane().add(camposTexto[linha][coluna], "grow"); 
+                adicionarEventosClique(camposTexto[linha][coluna], linha, coluna);
+            }
+        }
+
+        JButton btReniciar = new JButton("Reiniciar Jogo");
+        btReniciar.setFont(new Font("Dubai", Font.BOLD, 16));
+        btReniciar.setBackground(new Color(220, 220, 220));
+        btReniciar.setBorder(new LineBorder(new Color(160, 160, 160), 2));
+        btReniciar.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                tabuleiro.reiniciarJogo(Status);
+                limparCamposTexto();
+            }
+        });
+        getContentPane().add(btReniciar, "cell 0 5, grow");
+
+        JButton btVolta = new JButton("Desfazer Jogada");
+        btVolta.setFont(new Font("Dubai", Font.BOLD, 16));
+        btVolta.setBackground(new Color(220, 220, 220));
+        btVolta.setBorder(new LineBorder(new Color(160, 160, 160), 2));
+        btVolta.addActionListener(e -> {
+            if (tabuleiro.desfazerJogada(jogador)) {
+                Status.setText("Status: Jogada desfeita.");
+                jogador.alternarJogador();
+            } else {
+                Status.setText("Status: Nenhuma jogada para desfazer.");
+            }
+        });
+        getContentPane().add(btVolta, "cell 2 5, grow");
 
         Status = new JLabel("Status: Jogo em andamento");
-        getContentPane().add(Status, "cell 1 4 7 1,growx,aligny top");
-
-        txt1_1 = new JTextField();
-        txt1_1.setBackground(SystemColor.text);
-        txt1_1.setEditable(false);
-        getContentPane().add(txt1_1, "cell 1 1,grow");
-        txt1_1.setColumns(10);
-        txt1_1.setHorizontalAlignment(SwingConstants.CENTER);
-        txt1_1.setFont(new Font("Modern No. 20", Font.BOLD, 40));
-
-        txt1_2 = new JTextField();
-        txt1_2.setBackground(SystemColor.text);
-        txt1_2.setEditable(false);
-        getContentPane().add(txt1_2, "cell 3 1,grow");
-        txt1_2.setColumns(10);
-        txt1_2.setHorizontalAlignment(SwingConstants.CENTER);
-        txt1_2.setFont(new Font("Modern No. 20", Font.BOLD, 40));
-
-        txt1_3 = new JTextField();
-        txt1_3.setBackground(SystemColor.text);
-        txt1_3.setEditable(false);
-        getContentPane().add(txt1_3, "cell 5 1,grow");
-        txt1_3.setColumns(10);
-        txt1_3.setHorizontalAlignment(SwingConstants.CENTER);
-        txt1_3.setFont(new Font("Modern No. 20", Font.BOLD, 40));
-
-        txt2_1 = new JTextField();
-        txt2_1.setBackground(SystemColor.text);
-        txt2_1.setEditable(false);
-        getContentPane().add(txt2_1, "cell 1 2,grow");
-        txt2_1.setColumns(10);
-        txt2_1.setHorizontalAlignment(SwingConstants.CENTER);
-        txt2_1.setFont(new Font("Modern No. 20", Font.BOLD, 40));
-
-        txt2_2 = new JTextField();
-        txt2_2.setBackground(SystemColor.text);
-        txt2_2.setEditable(false);
-        getContentPane().add(txt2_2, "cell 3 2,grow");
-        txt2_2.setColumns(10);
-        txt2_2.setHorizontalAlignment(SwingConstants.CENTER);
-        txt2_2.setFont(new Font("Modern No. 20", Font.BOLD, 40));
-
-        txt2_3 = new JTextField();
-        txt2_3.setBackground(SystemColor.text);
-        txt2_3.setEditable(false);
-        getContentPane().add(txt2_3, "cell 5 2,grow");
-        txt2_3.setColumns(10);
-        txt2_3.setHorizontalAlignment(SwingConstants.CENTER);
-        txt2_3.setFont(new Font("Modern No. 20", Font.BOLD, 40));
-
-        txt3_1 = new JTextField();
-        txt3_1.setBackground(SystemColor.text);
-        txt3_1.setEditable(false);
-        getContentPane().add(txt3_1, "cell 1 3,grow");
-        txt3_1.setColumns(10);
-        txt3_1.setHorizontalAlignment(SwingConstants.CENTER);
-        txt3_1.setFont(new Font("Modern No. 20", Font.BOLD, 40));
-
-        txt3_2 = new JTextField();
-        txt3_2.setBackground(SystemColor.text);
-        txt3_2.setEditable(false);
-        getContentPane().add(txt3_2, "cell 3 3,grow");
-        txt3_2.setColumns(10);
-        txt3_2.setHorizontalAlignment(SwingConstants.CENTER);
-        txt3_2.setFont(new Font("Modern No. 20", Font.BOLD, 40));
-
-        txt3_3 = new JTextField();
-        txt3_3.setBackground(SystemColor.text);
-        txt3_3.setEditable(false);
-        getContentPane().add(txt3_3, "cell 5 3,grow");
-        txt3_3.setColumns(10);
-        txt3_3.setHorizontalAlignment(SwingConstants.CENTER);
-        txt3_3.setFont(new Font("Modern No. 20", Font.BOLD, 40));
-
-
-        JTextField[][] camposTexto = {
-            { txt1_1, txt1_2, txt1_3 },
-            { txt2_1, txt2_2, txt2_3 },
-            { txt3_1, txt3_2, txt3_3 }
-        };
+        Status.setFont(new Font("Dubai", Font.PLAIN, 18));
+        Status.setHorizontalAlignment(SwingConstants.CENTER);
+        getContentPane().add(Status, "span 3, align center");
 
         tabuleiro = new Tabuleiro(camposTexto);
         jogador = new Jogador();
+    }
 
-        txt1_1.addMouseListener(new MouseAdapter() {
+    private JTextField criarCampoTexto(Font font, Color bg) {
+        JTextField campoTexto = new JTextField();
+        campoTexto.setEditable(false);
+        campoTexto.setHorizontalAlignment(SwingConstants.CENTER);
+        campoTexto.setFont(font);
+        campoTexto.setBackground(bg);
+        campoTexto.setBorder(new LineBorder(new Color(160, 160, 160), 2));
+        return campoTexto;
+    }
+
+    private void adicionarEventosClique(JTextField campo, int linha, int coluna) {
+        campo.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (tabuleiro.fazerJogada(0, 0, jogador.getSimboloAtual(), Status)) {
+                if (tabuleiro.fazerJogada(linha, coluna, jogador.getSimboloAtual(), Status)) {
                     if (tabuleiro.verificarVitoria(jogador.getSimboloAtual(), Status)) {
-                        tabuleiro.exibirTabuleiro();
                         return;
                     }
                     jogador.alternarJogador();
-                    tabuleiro.exibirTabuleiro();
+                    tabuleiro.jogadaPc(Status, jogador);
                 }
             }
         });
+    }
 
-        txt1_2.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (tabuleiro.fazerJogada(0, 1, jogador.getSimboloAtual(), Status)) {
-                    if (tabuleiro.verificarVitoria(jogador.getSimboloAtual(), Status)) {
-                        tabuleiro.exibirTabuleiro();
-                        return;
-                    }
-                    jogador.alternarJogador();
-                    tabuleiro.exibirTabuleiro();
-                }
+    private void limparCamposTexto() {
+        for (int linha = 0; linha < 3; linha++) {
+            for (int coluna = 0; coluna < 3; coluna++) {
+                camposTexto[linha][coluna].setText(" ");
             }
-        });
-
-        txt1_3.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (tabuleiro.fazerJogada(0, 2, jogador.getSimboloAtual(), Status)) {
-                    if (tabuleiro.verificarVitoria(jogador.getSimboloAtual(), Status)) {
-                        tabuleiro.exibirTabuleiro();
-                        return;
-                    }
-                    jogador.alternarJogador();
-                    tabuleiro.exibirTabuleiro();
-                }
-            }
-        });
-
-        txt2_1.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (tabuleiro.fazerJogada(1, 0, jogador.getSimboloAtual(), Status)) {
-                    if (tabuleiro.verificarVitoria(jogador.getSimboloAtual(), Status)) {
-                        tabuleiro.exibirTabuleiro();
-                        return;
-                    }
-                    jogador.alternarJogador();
-                    tabuleiro.exibirTabuleiro();
-                }
-            }
-        });
-
-        txt2_2.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (tabuleiro.fazerJogada(1, 1, jogador.getSimboloAtual(), Status)) {
-                    if (tabuleiro.verificarVitoria(jogador.getSimboloAtual(), Status)) {
-                        tabuleiro.exibirTabuleiro();
-                        return;
-                    }
-                    jogador.alternarJogador();
-                    tabuleiro.exibirTabuleiro();
-                }
-            }
-        });
-
-        txt2_3.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (tabuleiro.fazerJogada(1, 2, jogador.getSimboloAtual(), Status)) {
-                    if (tabuleiro.verificarVitoria(jogador.getSimboloAtual(), Status)) {
-                        tabuleiro.exibirTabuleiro();
-                        return;
-                    }
-                    jogador.alternarJogador();
-                    tabuleiro.exibirTabuleiro();
-                }
-            }
-        });
-
-        txt3_1.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (tabuleiro.fazerJogada(2, 0, jogador.getSimboloAtual(), Status)) {
-                    if (tabuleiro.verificarVitoria(jogador.getSimboloAtual(), Status)) {
-                        tabuleiro.exibirTabuleiro();
-                        return;
-                    }
-                    jogador.alternarJogador();
-                    tabuleiro.exibirTabuleiro();
-                }
-            }
-        });
-
-        txt3_2.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (tabuleiro.fazerJogada(2, 1, jogador.getSimboloAtual(), Status)) {
-                    if (tabuleiro.verificarVitoria(jogador.getSimboloAtual(), Status)) {
-                        tabuleiro.exibirTabuleiro();
-                        return;
-                    }
-                    jogador.alternarJogador();
-                    tabuleiro.exibirTabuleiro();
-                }
-            }
-        });
-
-        txt3_3.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (tabuleiro.fazerJogada(2, 2, jogador.getSimboloAtual(), Status)) {
-                    if (tabuleiro.verificarVitoria(jogador.getSimboloAtual(), Status)) {
-                        tabuleiro.exibirTabuleiro();
-                        return;
-                    }
-                    jogador.alternarJogador();
-                    tabuleiro.exibirTabuleiro();
-                }
-            }
-        });
-
-        JButton btVolta = new JButton("Desfazer Jogada");
-        btVolta.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (tabuleiro.desfazerJogada()) {
-                    Status.setText("Status: Jogada desfeita.");
-                    jogador.alternarJogador(); 
-                    tabuleiro.exibirTabuleiro();
-                } else {
-                    Status.setText("Status: Nenhuma jogada para desfazer.");
-                }
-            }
-        });
-        getContentPane().add(btVolta, "cell 7 1,grow");
+        }
     }
 }
