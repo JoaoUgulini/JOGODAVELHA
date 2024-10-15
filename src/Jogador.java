@@ -1,3 +1,4 @@
+
 class Jogador {
     private String simboloAtual;
 
@@ -5,7 +6,11 @@ class Jogador {
         simboloAtual = "X";
     }
 
-    public String getSimboloAtual() {
+    public void setSimboloAtual(String simboloAtual) {
+		this.simboloAtual = "X";
+	}
+
+	public String getSimboloAtual() {
         return simboloAtual;
     }
 

@@ -42,7 +42,7 @@ public class JogoDaVelha extends JFrame {
         setBounds(100, 100, 500, 500);
         getContentPane().setBackground(new Color(245, 245, 245));
 
-        getContentPane().setLayout(new MigLayout("wrap 3", "[grow][grow][grow]", "[]20[grow][grow][grow]20[]20[]"));
+        getContentPane().setLayout(new MigLayout("wrap 3", "[160.00,grow][160.00,grow][160.00,grow]", "[]20[grow][grow][grow]20[]20[][][]"));
 
 
         JLabel titulo = new JLabel("Jogo da Velha");
@@ -71,6 +71,7 @@ public class JogoDaVelha extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 tabuleiro.reiniciarJogo(Status);
+                jogador.setSimboloAtual(jogador.getSimboloAtual());
                 limparCamposTexto();
             }
         });
